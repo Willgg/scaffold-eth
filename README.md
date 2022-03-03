@@ -86,7 +86,7 @@ A basic structure for Emails and storing/encrypting/decrypting them. We will def
     to: "0x11D4C4C4845f142f372dF31c7021a97CDC7DdB66",
     from: "0xad0c88eE3159FCbc44cd535f7f70E0ACa6eE2ddB",
     Subject: "Hello World",
-    timestamp: "12316546521145",
+    timestamp: 12316546521145,
     body: "I hope this works :D"
 }
 ```
@@ -110,7 +110,7 @@ The email json objects would be encrypted using the public key of the user.
     to: "0x11D4C4C4845f142f372dF31c7021a97CDC7DdB66",
     from: "0xad0c88eE3159FCbc44cd535f7f70E0ACa6eE2ddB",
     Subject: "Hello World",
-    timestamp: "12316546521145",
+    timestamp: 12316546521145,
     body: "I sending this to 0x11D4C4C4845f142f372dF31c7021a97CDC7DdB66"
 }
 ```
