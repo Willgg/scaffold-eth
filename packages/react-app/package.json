@@ -55,7 +55,10 @@
     "react-scripts": "4.0.0",
     "searchico": "^1.2.1",
     "walletlink": "^2.1.5",
-    "web3modal": "^1.9.1"
+    "web3modal": "^1.9.1",
+    "orbit-db": "^0.28.3",
+    "ipfs": "^0.62.1",
+    "ipfs-api": "^26.1.2"
   },
   "devDependencies": {
     "@apollo/client": "^3.3.21",
