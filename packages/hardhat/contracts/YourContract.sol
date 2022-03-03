@@ -7,9 +7,10 @@ import "hardhat/console.sol";
 
 contract YourContract {
 
-  event SetPurpose(address sender, string purpose);
+  event RegisterUser(address sender, string mailboxStorage);
 
   string public purpose = "Building Unstoppable Apps!!!";
+  mapping(address => string) private mailboxes;
 
   constructor() payable {
     // what should we do on deploy?
@@ -18,7 +19,18 @@ contract YourContract {
   function setPurpose(string memory newPurpose) public {
       purpose = newPurpose;
       console.log(msg.sender,"set purpose to",purpose);
-      emit SetPurpose(msg.sender, purpose);
+  }
+
+
+  function getUserInbox(address user) public view returns (string memory) {
+    console.log(mailboxes[user]);
+    return mailboxes[user];
+  }
+
+  function registerUser(string memory mailboxStorage) public {
+      mailboxes[msg.sender] = mailboxStorage;
+      console.log(msg.sender, mailboxStorage);
+      //emit RegisterUser(msg.sender, mailboxStorage);
   }
 
   // to support receiving ETH by default
