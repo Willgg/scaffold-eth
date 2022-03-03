@@ -81,6 +81,7 @@ mempool string = 'someLocationInIPFS' ///it would look like ipfs/Qme7ss3ARVgxv6r
 A basic structure for Emails and storing/encrypting/decrypting them. We will defenitly need to expand.. alot!
 
 //email object in JSON
+```bash
 {
     to: "0x11D4C4C4845f142f372dF31c7021a97CDC7DdB66",
     from: "0xad0c88eE3159FCbc44cd535f7f70E0ACa6eE2ddB",
@@ -88,19 +89,23 @@ A basic structure for Emails and storing/encrypting/decrypting them. We will def
     timestamp: "12316546521145",
     body: "I hope this works :D"
 }
+```
 
 //the structure of the ipfs file/database will look like this
+```bash
 {
     inbox: [array of encrypted emails]
     sent: [array of encrypted emails]
 }
+```
 //This file would have an ipfs reference location similar to -> /ipfs/0x11D4C4C4845f142f372dF31c7021a97CDC7DdB66-inbox
 The email json objects would be encrypted using the public key of the user.
 
 
 # 📚 How does it work in the background when an email is sent
 
-Step 1: Sender creates the email object in JSON
+- Step 1: Sender creates the email object in JSON
+```bash
 {
     to: "0x11D4C4C4845f142f372dF31c7021a97CDC7DdB66",
     from: "0xad0c88eE3159FCbc44cd535f7f70E0ACa6eE2ddB",
@@ -108,9 +113,10 @@ Step 1: Sender creates the email object in JSON
     timestamp: "12316546521145",
     body: "I sending this to 0x11D4C4C4845f142f372dF31c7021a97CDC7DdB66"
 }
-Step 2: Web client calls the smart contract function `GetUserInbox(address)` and gets an IPFS db/file location. This function will either return an IPFS location (Step 3a) or a null(Step 3b).
-Step 3a: Web client encrypts the email object and adds it to the `inbox` list/array and saves the IPFS file/db
-Step 3b: If we got a null from Step 2. Then the Web Client calls `GetMempool()` and gets IPFS file/db that holds all pending emails. Adds the encrypted email there
+```
+- Step 2: Web client calls the smart contract function `GetUserInbox(address)` and gets an IPFS db/file location. This function will either return an IPFS location (Step 3a) or a null(Step 3b).
+- Step 3a: Web client encrypts the email object and adds it to the `inbox` list/array and saves the IPFS file/db
+- Step 3b: If we got a null from Step 2. Then the Web Client calls `GetMempool()` and gets IPFS file/db that holds all pending emails. Adds the encrypted email there
 
 
 
