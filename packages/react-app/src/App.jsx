@@ -23,14 +23,14 @@ import {
   NetworkDisplay,
   FaucetHint,
   NetworkSwitch,
-} from "../components";
-import { NETWORKS, ALCHEMY_KEY } from "../constants";
-import externalContracts from "../contracts/external_contracts";
+} from "./components";
+import { NETWORKS, ALCHEMY_KEY } from "./constants";
+import externalContracts from "./contracts/external_contracts";
 // contracts
-import deployedContracts from "../contracts/hardhat_contracts.json";
-import { Transactor, Web3ModalSetup } from "../helpers";
-import { Home, ExampleUI, Hints, Subgraph, Particles } from "../views";
-import { useStaticJsonRPC } from "../hooks";
+import deployedContracts from "./contracts/hardhat_contracts.json";
+import { Transactor, Web3ModalSetup } from "./helpers";
+import { Home, ExampleUI, Hints, Subgraph, Particles } from "./views";
+import { useStaticJsonRPC } from "./hooks";
 
 //3rd-party impprts
 import Typewriter from "typewriter-effect";
@@ -91,7 +91,7 @@ const providers = [
 
 function App(props) {
   // specify all the chains your app is available on. Eg: ['localhost', 'mainnet', ...otherNetworks ]
-  // reference '../constants.js' for other networks
+  // reference './constants.js' for other networks
   const networkOptions = [initialNetwork.name, "mainnet", "rinkeby"];
 
   const [injectedProvider, setInjectedProvider] = useState();
