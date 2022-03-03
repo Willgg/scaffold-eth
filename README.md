@@ -47,63 +47,76 @@ yarn deploy
 
 📱 Open http://localhost:3000 to see the app
 
-# 📚 Documentation
+# 📚 Web3 Email Stack and Design
 
-Documentation, tutorials, challenges, and many more resources, visit: [docs.scaffoldeth.io](https://docs.scaffoldeth.io)
+- Web Client
+    - React Based UI that allows users to connect to metamask and check their Emails
+- Smart Contract
+    - Code that lives on the chain and keeps up with Email users and the IPFS reference to their inbox
+- Email Storage
+    - A database/file hosted on IPFS that contains all the emails sent/received by the user
 
-# 🔭 Learning Solidity
+# 💌  Web Client
+Added some use cases for the Web Client. 
+- Create Inbox (Creates a new file/Database on IPFS for this user and registers it with the smart contract)
+- Check For New Emails (Refresh button?? Decrypts using Metamask instead of grabbing private key??)
+- Compose Email (Rich Text??)
+- Send Email (Encrypt using Recievers public key)
+ 
 
-📕 Read the docs: https://docs.soliditylang.org
+# 📝  Smart Contract
+This is roughly how I see the contract looking like:
 
-📚 Go through each topic from [solidity by example](https://solidity-by-example.org) editing `YourContract.sol` in **🏗 scaffold-eth**
-
-- [Primitive Data Types](https://solidity-by-example.org/primitives/)
-- [Mappings](https://solidity-by-example.org/mapping/)
-- [Structs](https://solidity-by-example.org/structs/)
-- [Modifiers](https://solidity-by-example.org/function-modifier/)
-- [Events](https://solidity-by-example.org/events/)
-- [Inheritance](https://solidity-by-example.org/inheritance/)
-- [Payable](https://solidity-by-example.org/payable/)
-- [Fallback](https://solidity-by-example.org/fallback/)
-
-📧 Learn the [Solidity globals and units](https://solidity.readthedocs.io/en/v0.6.6/units-and-global-variables.html)
-
-# 🛠 Buidl
-
-Check out all the [active branches](https://github.com/scaffold-eth/scaffold-eth/branches/active), [open issues](https://github.com/scaffold-eth/scaffold-eth/issues), and join/fund the 🏰 [BuidlGuidl](https://BuidlGuidl.com)!
-
-  
- - 🚤  [Follow the full Ethereum Speed Run](https://medium.com/@austin_48503/%EF%B8%8Fethereum-dev-speed-run-bd72bcba6a4c)
+KeyValueMap <address, string IPFS_location>  inboxes;
+mempool string = 'someLocationInIPFS' ///it would look like ipfs/Qme7ss3ARVgxv6rXqVPiikMJ8u2NLgmgszg13pYrDKEoiu
+- function RegisterUser(string->IPFS Storage Location)  //string would look like /ipfs/0x11D4C4C4845f142f372dF31c7021a97CDC7DdB66-inbox
+    inboxes.add(address of the person calling the function,IPFS Storage Location)
+- function GetUserInbox(address)
+    index.get(address) //this would be null if the user address never registered otherwise it would return the ipfs address for that user
+- function GetMempool()
+    return mempool;
 
 
- - 🎟  [Create your first NFT](https://github.com/scaffold-eth/scaffold-eth/tree/simple-nft-example)
- - 🥩  [Build a staking smart contract](https://github.com/scaffold-eth/scaffold-eth/tree/challenge-1-decentralized-staking)
- - 🏵  [Deploy a token and vendor](https://github.com/scaffold-eth/scaffold-eth/tree/challenge-2-token-vendor)
- - 🎫  [Extend the NFT example to make a "buyer mints" marketplace](https://github.com/scaffold-eth/scaffold-eth/tree/buyer-mints-nft)
- - 🎲  [Learn about commit/reveal](https://github.com/scaffold-eth/scaffold-eth/tree/commit-reveal-with-frontend)
- - ✍️  [Learn how ecrecover works](https://github.com/scaffold-eth/scaffold-eth/tree/signature-recover)
- - 👩‍👩‍👧‍👧  [Build a multi-sig that uses off-chain signatures](https://github.com/scaffold-eth/scaffold-eth/tree/meta-multi-sig)
- - ⏳  [Extend the multi-sig to stream ETH](https://github.com/scaffold-eth/scaffold-eth/tree/streaming-meta-multi-sig)
- - ⚖️  [Learn how a simple DEX works](https://medium.com/@austin_48503/%EF%B8%8F-minimum-viable-exchange-d84f30bd0c90)
- - 🦍  [Ape into learning!](https://github.com/scaffold-eth/scaffold-eth/tree/aave-ape)
+# 📚 Email Storage
+A basic structure for Emails and storing/encrypting/decrypting them. We will defenitly need to expand.. alot!
 
-# 💌 P.S.
+//email object in JSON
+{
+    to: "0x11D4C4C4845f142f372dF31c7021a97CDC7DdB66",
+    from: "0xad0c88eE3159FCbc44cd535f7f70E0ACa6eE2ddB",
+    Subject: "Hello World",
+    timestamp: "12316546521145",
+    body: "I hope this works :D"
+}
 
-🌍 You need an RPC key for testnets and production deployments, create an [Alchemy](https://www.alchemy.com/) account and replace the value of `ALCHEMY_KEY = xxx` in `packages/react-app/src/constants.js` with your new key.
+//the structure of the ipfs file/database will look like this
+{
+    inbox: [array of encrypted emails]
+    sent: [array of encrypted emails]
+}
+//This file would have an ipfs reference location similar to -> /ipfs/0x11D4C4C4845f142f372dF31c7021a97CDC7DdB66-inbox
+The email json objects would be encrypted using the public key of the user.
 
-📣 Make sure you update the `InfuraID` before you go to production. Huge thanks to [Infura](https://infura.io/) for our special account that fields 7m req/day!
 
-# 🏃💨 Speedrun Ethereum
-Register as a builder [here](https://speedrunethereum.com) and start on some of the challenges and build a portfolio.
+# 📚 How does it work in the background when an email is sent
 
-# 💬 Support Chat
+Step 1: Sender creates the email object in JSON
+{
+    to: "0x11D4C4C4845f142f372dF31c7021a97CDC7DdB66",
+    from: "0xad0c88eE3159FCbc44cd535f7f70E0ACa6eE2ddB",
+    Subject: "Hello World",
+    timestamp: "12316546521145",
+    body: "I sending this to 0x11D4C4C4845f142f372dF31c7021a97CDC7DdB66"
+}
+Step 2: Web client calls the smart contract function `GetUserInbox(address)` and gets an IPFS db/file location. This function will either return an IPFS location (Step 3a) or a null(Step 3b).
+Step 3a: Web client encrypts the email object and adds it to the `inbox` list/array and saves the IPFS file/db
+Step 3b: If we got a null from Step 2. Then the Web Client calls `GetMempool()` and gets IPFS file/db that holds all pending emails. Adds the encrypted email there
 
-Join the telegram [support chat 💬](https://t.me/joinchat/KByvmRe5wkR-8F_zz6AjpA) to ask questions and find others building with 🏗 scaffold-eth!
 
----
 
-🙏 Please check out our [Gitcoin grant](https://gitcoin.co/grants/2851/scaffold-eth) too!
 
-### Automated with Gitpod
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#github.com/scaffold-eth/scaffold-eth)
+
+
+
+
