@@ -58,7 +58,9 @@
     "web3modal": "^1.9.1",
     "orbit-db": "^0.28.3",
     "ipfs": "^0.62.1",
-    "ipfs-api": "^26.1.2"
+    "ipfs-api": "^26.1.2",
+    "react-orbitdb": "^1.0.1",
+    "gun": "^0.2020.1235"
   },
   "devDependencies": {
     "@apollo/client": "^3.3.21",

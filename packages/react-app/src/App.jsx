@@ -31,7 +31,13 @@ import deployedContracts from "./contracts/hardhat_contracts.json";
 import { Transactor, Web3ModalSetup } from "./helpers";
 import { Home, ExampleUI, Hints, Subgraph } from "./views";
 import { useStaticJsonRPC } from "./hooks";
-
+// import { create,urlSource }  from "ipfs-http-client";
+// import { OrbitDB } from "orbit-db";
+// const IPFS = require('ipfs')
+// const OrbitDB = require('orbit-db')
+// import { OrbitProvider } from "../../../node_modules/react-orbitdb/";
+// eslint-disable-next-line
+import Gun from 'gun/gun';
 const { ethers } = require("ethers");
 /*
     Welcome to 🏗 scaffold-eth !
@@ -125,6 +131,16 @@ function App(props) {
   // })
   useEffect(() => {
     async function setupDatabase() {
+      const gun = Gun({
+        peers: ["https://gun-manhattan.herokuapp.com/gun"], // Put the relay node that you want here
+      });
+      // let gun = Gun("https://gun-manhattan.herokuapp.com/gun");
+      let copy = gun.get("test").get("paste");
+      copy.put("HELLO, is Gun workig on console log");
+      copy.on(data => {
+        
+        console.log(data);
+      });
       return " ";
     }
     setupDatabase();
