@@ -31,8 +31,6 @@ import deployedContracts from "./contracts/hardhat_contracts.json";
 import { Transactor, Web3ModalSetup } from "./helpers";
 import { Home, ExampleUI, Hints, Subgraph } from "./views";
 import { useStaticJsonRPC } from "./hooks";
-import { IPFS } from "ipfs" 
-import { OrbitDB } from "orbit-db" 
 
 const { ethers } = require("ethers");
 /*
@@ -117,16 +115,18 @@ function App(props) {
   const userProviderAndSigner = useUserProviderAndSigner(injectedProvider, localProvider, USE_BURNER_WALLET);
   const userSigner = userProviderAndSigner.signer;
 
-  setupDatabase( async () => {
-    const ipfs = await IPFS.create()
-    //const ipfsOptions = { repo : './ipfs', }
-    //const ipfs = await IPFS.create(ipfsOptions)
-  
-    // Create OrbitDB instance
-    const orbitdb = await OrbitDB.createInstance(ipfs)
-  })
-  
+  // setupDatabase( async () => {
+  //   // const ipfs = await IPFS.create()
+  //   //const ipfsOptions = { repo : './ipfs', }
+  //   //const ipfs = await IPFS.create(ipfsOptions)
+  //   // Create OrbitDB instance
+  //   // const orbitdb = await OrbitDB.createInstance(ipfs)
+  //   return 'asdas';
+  // })
   useEffect(() => {
+    async function setupDatabase() {
+      return " ";
+    }
     setupDatabase();
     async function getAddress() {
       if (userSigner) {
