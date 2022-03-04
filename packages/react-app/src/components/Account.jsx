@@ -19,12 +19,13 @@ export default function Account({
   logoutOfWeb3Modal,
   blockExplorer,
   isContract,
+  setMinimized = null,
 }) {
   const { currentTheme } = useThemeSwitcher();
-
   const modalButtons = [];
   if (web3Modal) {
     if (web3Modal.cachedProvider) {
+      setMinimized && setMinimized(false);
       modalButtons.push(
         <Button
           key="logoutbutton"
@@ -37,6 +38,7 @@ export default function Account({
         </Button>,
       );
     } else {
+      setMinimized && setMinimized(true);
       modalButtons.push(
         <Button
           key="loginbutton"

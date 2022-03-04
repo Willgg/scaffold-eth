@@ -1,4 +1,5 @@
 import { Button, Col, Menu, Row } from "antd";
+import { Helmet } from "react-helmet";
 import "antd/dist/antd.css";
 import {
   useBalance,
@@ -10,7 +11,7 @@ import {
 } from "eth-hooks";
 import { useExchangeEthPrice } from "eth-hooks/dapps/dex";
 import React, { useCallback, useEffect, useState } from "react";
-import { Link, Route, Switch, useLocation } from "react-router-dom";
+import { Link, Route, Switch, useLocation, useNavigate } from "react-router-dom";
 
 import {
   Account,
@@ -80,7 +81,7 @@ const NETWORKCHECK = true;
 const USE_BURNER_WALLET = true; // toggle burner wallet feature
 const USE_NETWORK_SELECTOR = false;
 
-const web3Modal = Web3ModalSetup();
+export const web3Modal = Web3ModalSetup();
 
 // 🛰 providers
 const providers = [
@@ -92,10 +93,12 @@ const providers = [
 function App(props) {
   // specify all the chains your app is available on. Eg: ['localhost', 'mainnet', ...otherNetworks ]
   // reference '../constants.js' for other networks
+  const navigation = useNavigate();
   const networkOptions = [initialNetwork.name, "mainnet", "rinkeby"];
 
   const [injectedProvider, setInjectedProvider] = useState();
   const [address, setAddress] = useState();
+  const [minimized, setMinimized] = useState(true);
   const [selectedNetwork, setSelectedNetwork] = useState(networkOptions[0]);
   const location = useLocation();
 
@@ -255,6 +258,7 @@ function App(props) {
       console.log(code, reason);
       logoutOfWeb3Modal();
     });
+    // navigation("/");
     // eslint-disable-next-line
   }, [setInjectedProvider]);
 
@@ -267,60 +271,72 @@ function App(props) {
   const faucetAvailable = localProvider && localProvider.connection && targetNetwork.name.indexOf("local") !== -1;
 
   return (
-    <div style={{ width: "100vw", height: "100vh", justifyContent: "center", alignItems: "center" }} className="Signin">
-      {/* ✏️ Edit the header and change the title to your project name */}
-      <NetworkDisplay
-        NETWORKCHECK={NETWORKCHECK}
-        localChainId={localChainId}
-        selectedChainId={selectedChainId}
-        targetNetwork={targetNetwork}
-        logoutOfWeb3Modal={logoutOfWeb3Modal}
-        USE_NETWORK_SELECTOR={USE_NETWORK_SELECTOR}
-      />
+    <>
+      <Helmet>
+        <title>SignIn | emailDAO</title>
+      </Helmet>
+      <div
+        style={{ width: "100vw", height: "100vh", justifyContent: "center", alignItems: "center" }}
+        className="Signin"
+      >
+        {/* ✏️ Edit the header and change the title to your project name */}
+        <NetworkDisplay
+          NETWORKCHECK={NETWORKCHECK}
+          localChainId={localChainId}
+          selectedChainId={selectedChainId}
+          targetNetwork={targetNetwork}
+          logoutOfWeb3Modal={logoutOfWeb3Modal}
+          USE_NETWORK_SELECTOR={USE_NETWORK_SELECTOR}
+        />
+        {/* 👨‍💼 Your account is in the top right with a wallet at connect options */}
+        <div style={{ display: "flex", width: "100%", height: "100%", justifyContent: "center", alignItems: "center" }}>
+          <Particles />
+          <div
+            style={{
+              display: "flex",
+              flex: 1,
+              alignItems: "center",
+              justifyContent: "center",
+              flexDirection: "column",
+            }}
+          >
+            <h1>
+              Hi,connect to your wallet ! <span className="wave">👋🏻</span>{" "}
+            </h1>
+            <h4 type="secondary">
+              <Type />
+            </h4>
 
-      <ThemeSwitch />
-
-      {/* 👨‍💼 Your account is in the top right with a wallet at connect options */}
-      <div style={{ display: "flex", width: "100%", height: "100%", justifyContent: "center", alignItems: "center" }}>
-        <Particles />
-        <div
-          style={{ display: "flex", flex: 1, alignItems: "center", justifyContent: "center", flexDirection: "column" }}
-        >
-          <h1>
-            Hi,connect to your wallet ! <span className="wave">👋🏻</span>{" "}
-          </h1>
-          <h4 type="secondary">
-            <Type />
-          </h4>
-
-          {USE_NETWORK_SELECTOR && (
-            <div style={{ marginRight: 20 }}>
-              <NetworkSwitch
-                networkOptions={networkOptions}
-                selectedNetwork={selectedNetwork}
-                setSelectedNetwork={setSelectedNetwork}
-              />
-            </div>
+            {USE_NETWORK_SELECTOR && (
+              <div style={{ marginRight: 20 }}>
+                <NetworkSwitch
+                  networkOptions={networkOptions}
+                  selectedNetwork={selectedNetwork}
+                  setSelectedNetwork={setSelectedNetwork}
+                />
+              </div>
+            )}
+            <Account
+              useBurner={USE_BURNER_WALLET}
+              address={address}
+              localProvider={localProvider}
+              userSigner={userSigner}
+              mainnetProvider={mainnetProvider}
+              price={price}
+              web3Modal={web3Modal}
+              loadWeb3Modal={loadWeb3Modal}
+              logoutOfWeb3Modal={logoutOfWeb3Modal}
+              blockExplorer={blockExplorer}
+              minimized={minimized}
+              setMinimized={setMinimized}
+            />
+          </div>
+          {yourLocalBalance.lte(ethers.BigNumber.from("0")) && (
+            <FaucetHint localProvider={localProvider} targetNetwork={targetNetwork} address={address} />
           )}
-          <Account
-            useBurner={USE_BURNER_WALLET}
-            address={address}
-            localProvider={localProvider}
-            userSigner={userSigner}
-            mainnetProvider={mainnetProvider}
-            price={price}
-            web3Modal={web3Modal}
-            loadWeb3Modal={loadWeb3Modal}
-            logoutOfWeb3Modal={logoutOfWeb3Modal}
-            blockExplorer={blockExplorer}
-            minimized={true}
-          />
         </div>
-        {yourLocalBalance.lte(ethers.BigNumber.from("0")) && (
-          <FaucetHint localProvider={localProvider} targetNetwork={targetNetwork} address={address} />
-        )}
       </div>
-    </div>
+    </>
   );
 }
 
