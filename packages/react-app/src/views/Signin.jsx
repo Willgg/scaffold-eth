@@ -200,42 +200,42 @@ function App(props) {
   //
   // 🧫 DEBUG 👨🏻‍🔬
   //
-  useEffect(() => {
-    if (
-      DEBUG &&
-      mainnetProvider &&
-      address &&
-      selectedChainId &&
-      yourLocalBalance &&
-      yourMainnetBalance &&
-      readContracts &&
-      writeContracts &&
-      mainnetContracts
-    ) {
-      console.log("_____________________________________ 🏗 scaffold-eth _____________________________________");
-      console.log("🌎 mainnetProvider", mainnetProvider);
-      console.log("🏠 localChainId", localChainId);
-      console.log("👩‍💼 selected address:", address);
-      console.log("🕵🏻‍♂️ selectedChainId:", selectedChainId);
-      console.log("💵 yourLocalBalance", yourLocalBalance ? ethers.utils.formatEther(yourLocalBalance) : "...");
-      console.log("💵 yourMainnetBalance", yourMainnetBalance ? ethers.utils.formatEther(yourMainnetBalance) : "...");
-      console.log("📝 readContracts", readContracts);
-      console.log("🌍 DAI contract on mainnet:", mainnetContracts);
-      console.log("💵 yourMainnetDAIBalance", myMainnetDAIBalance);
-      console.log("🔐 writeContracts", writeContracts);
-    }
-  }, [
-    mainnetProvider,
-    address,
-    selectedChainId,
-    yourLocalBalance,
-    yourMainnetBalance,
-    readContracts,
-    writeContracts,
-    mainnetContracts,
-    localChainId,
-    myMainnetDAIBalance,
-  ]);
+  // useEffect(() => {
+  //   if (
+  //     DEBUG &&
+  //     mainnetProvider &&
+  //     address &&
+  //     selectedChainId &&
+  //     yourLocalBalance &&
+  //     yourMainnetBalance &&
+  //     readContracts &&
+  //     writeContracts &&
+  //     mainnetContracts
+  //   ) {
+  //     console.log("_____________________________________ 🏗 scaffold-eth _____________________________________");
+  //     console.log("🌎 mainnetProvider", mainnetProvider);
+  //     console.log("🏠 localChainId", localChainId);
+  //     console.log("👩‍💼 selected address:", address);
+  //     console.log("🕵🏻‍♂️ selectedChainId:", selectedChainId);
+  //     console.log("💵 yourLocalBalance", yourLocalBalance ? ethers.utils.formatEther(yourLocalBalance) : "...");
+  //     console.log("💵 yourMainnetBalance", yourMainnetBalance ? ethers.utils.formatEther(yourMainnetBalance) : "...");
+  //     console.log("📝 readContracts", readContracts);
+  //     console.log("🌍 DAI contract on mainnet:", mainnetContracts);
+  //     console.log("💵 yourMainnetDAIBalance", myMainnetDAIBalance);
+  //     console.log("🔐 writeContracts", writeContracts);
+  //   }
+  // }, [
+  //   mainnetProvider,
+  //   address,
+  //   selectedChainId,
+  //   yourLocalBalance,
+  //   yourMainnetBalance,
+  //   readContracts,
+  //   writeContracts,
+  //   mainnetContracts,
+  //   localChainId,
+  //   myMainnetDAIBalance,
+  // ]);
 
   const loadWeb3Modal = useCallback(async () => {
     console.log("loaded");
@@ -244,11 +244,13 @@ function App(props) {
     setInjectedProvider(new ethers.providers.Web3Provider(provider));
 
     provider.on("chainChanged", chainId => {
+      navigation("/");
       console.log(`chain changed to ${chainId}! updating providers`);
       setInjectedProvider(new ethers.providers.Web3Provider(provider));
     });
 
     provider.on("accountsChanged", () => {
+      navigation("/");
       console.log(`account changed!`);
       setInjectedProvider(new ethers.providers.Web3Provider(provider));
     });
@@ -267,6 +269,16 @@ function App(props) {
       loadWeb3Modal();
     }
   }, [loadWeb3Modal]);
+  React.useEffect(() => {
+    if (web3Modal) {
+      if (web3Modal.cachedProvider) {
+        console.log("gdfggf");
+        if (window.location.pathname === "/sign-in") {
+          navigation("/");
+        }
+      }
+    }
+  }, [web3Modal]);
 
   const faucetAvailable = localProvider && localProvider.connection && targetNetwork.name.indexOf("local") !== -1;
 
@@ -275,10 +287,7 @@ function App(props) {
       <Helmet>
         <title>SignIn | emailDAO</title>
       </Helmet>
-      <div
-        style={{ width: "100vw", height: "100vh", justifyContent: "center", alignItems: "center" }}
-        className="Signin"
-      >
+      <div className="sign-in-container">
         {/* ✏️ Edit the header and change the title to your project name */}
         <NetworkDisplay
           NETWORKCHECK={NETWORKCHECK}
@@ -289,52 +298,34 @@ function App(props) {
           USE_NETWORK_SELECTOR={USE_NETWORK_SELECTOR}
         />
         {/* 👨‍💼 Your account is in the top right with a wallet at connect options */}
-        <div style={{ display: "flex", width: "100%", height: "100%", justifyContent: "center", alignItems: "center" }}>
-          <Particles />
-          <div
-            style={{
-              display: "flex",
-              flex: 1,
-              alignItems: "center",
-              justifyContent: "center",
-              flexDirection: "column",
-            }}
-          >
-            <h1>
-              Hi,connect to your wallet ! <span className="wave">👋🏻</span>{" "}
-            </h1>
-            <h4 type="secondary">
-              <Type />
-            </h4>
-
-            {USE_NETWORK_SELECTOR && (
-              <div style={{ marginRight: 20 }}>
-                <NetworkSwitch
-                  networkOptions={networkOptions}
-                  selectedNetwork={selectedNetwork}
-                  setSelectedNetwork={setSelectedNetwork}
-                />
-              </div>
-            )}
-            <Account
-              useBurner={USE_BURNER_WALLET}
-              address={address}
-              localProvider={localProvider}
-              userSigner={userSigner}
-              mainnetProvider={mainnetProvider}
-              price={price}
-              web3Modal={web3Modal}
-              loadWeb3Modal={loadWeb3Modal}
-              logoutOfWeb3Modal={logoutOfWeb3Modal}
-              blockExplorer={blockExplorer}
-              minimized={minimized}
-              setMinimized={setMinimized}
-            />
-          </div>
-          {yourLocalBalance.lte(ethers.BigNumber.from("0")) && (
-            <FaucetHint localProvider={localProvider} targetNetwork={targetNetwork} address={address} />
+        <div style={{ justifyContent: "center", alignItems: "center" }}>
+          {USE_NETWORK_SELECTOR && (
+            <div style={{ marginRight: 20 }}>
+              <NetworkSwitch
+                networkOptions={networkOptions}
+                selectedNetwork={selectedNetwork}
+                setSelectedNetwork={setSelectedNetwork}
+              />
+            </div>
           )}
+          <Account
+            useBurner={USE_BURNER_WALLET}
+            address={address}
+            localProvider={localProvider}
+            userSigner={userSigner}
+            mainnetProvider={mainnetProvider}
+            price={price}
+            web3Modal={web3Modal}
+            loadWeb3Modal={loadWeb3Modal}
+            logoutOfWeb3Modal={logoutOfWeb3Modal}
+            blockExplorer={blockExplorer}
+            minimized={minimized}
+            setMinimized={setMinimized}
+          />
         </div>
+        {/* {yourLocalBalance.lte(ethers.BigNumber.from("0")) && (
+          <FaucetHint localProvider={localProvider} targetNetwork={targetNetwork} address={address} />
+        )} */}
       </div>
     </>
   );

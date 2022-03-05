@@ -1,6 +1,7 @@
 import { Button } from "antd";
 import React from "react";
 import { useThemeSwitcher } from "react-css-theme-switcher";
+import { useNavigate } from "react-router-dom";
 
 import Address from "./Address";
 import Balance from "./Balance";
@@ -21,10 +22,17 @@ export default function Account({
   isContract,
   setMinimized = null,
 }) {
+  const navigation = useNavigate();
   const { currentTheme } = useThemeSwitcher();
   const modalButtons = [];
+  React.useEffect(() => {
+    console.log("runningggggg");
+  }, [web3Modal]);
   if (web3Modal) {
     if (web3Modal.cachedProvider) {
+      if (window.location.pathname === "/sign-in") {
+        navigation("/");
+      }
       setMinimized && setMinimized(false);
       modalButtons.push(
         <Button
@@ -100,7 +108,7 @@ export default function Account({
   );
 
   return (
-    <div>
+    <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
       {display}
       {modalButtons}
     </div>

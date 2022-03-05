@@ -5,19 +5,17 @@ export default function ParticlesComp() {
   const [theme, setTheme] = React.useState("light");
   React.useEffect(() => {
     console.log(localStorage.getItem("theme"));
-    setTheme(localStorage.getItem("theme") === "dark" ? "dark" : "light");
-  }, [localStorage.getItem("theme")]);
+  }, [localStorage.theme]);
   return (
     <Particles
       options={{
         fullScreen: {
           enable: true,
-          zIndex: -1,
+          zIndex: 0,
         },
         particles: {
           number: {
             value: 100,
-            limit: 300,
             density: {
               enable: true,
               value_area: 800,
@@ -27,50 +25,50 @@ export default function ParticlesComp() {
             value: "#fff",
           },
           shape: {
-            type: "line",
+            type: "circle",
             stroke: {
               width: 0,
-              color: localStorage.getItem("theme") === "dark" ? "white" : "black",
+              color: "#fff",
             },
             polygon: {
               nb_sides: 5,
             },
             image: {
-              src: "images/github.svg",
+              src: "img/github.svg",
               width: 100,
               height: 100,
             },
           },
           opacity: {
-            value: 0.5,
-            random: true,
+            value: 0.3,
+            random: false,
             anim: {
-              enable: true,
+              enable: false,
               speed: 1,
-              opacity_min: 0.5,
+              opacity_min: 0.1,
               sync: false,
             },
           },
           size: {
-            value: 30,
+            value: 3,
             random: true,
             anim: {
-              enable: true,
-              speed: 10,
-              size_min: 10,
+              enable: false,
+              speed: 10000,
+              size_min: 0.1,
               sync: false,
             },
           },
           line_linked: {
             enable: true,
-            distance: 100,
-            color: localStorage.getItem("theme") == "dark" ? "white" : "black",
-            opacity: 1,
+            distance: 150,
+            color: "#fff",
+            opacity: 0.4,
             width: 1,
           },
           move: {
             enable: true,
-            speed: 3,
+            speed: 1,
             direction: "none",
             random: false,
             straight: false,
@@ -83,6 +81,46 @@ export default function ParticlesComp() {
             },
           },
         },
+        interactivity: {
+          detect_on: "canvas",
+          events: {
+            onhover: {
+              enable: false,
+              mode: "repulse",
+            },
+            onclick: {
+              enable: false,
+              mode: "push",
+            },
+            resize: true,
+          },
+          modes: {
+            grab: {
+              distance: 400,
+              line_linked: {
+                opacity: 1,
+              },
+            },
+            bubble: {
+              distance: 400,
+              size: 40,
+              duration: 2,
+              opacity: 8,
+              speed: 3,
+            },
+            repulse: {
+              distance: 200,
+              duration: 0.4,
+            },
+            push: {
+              particles_nb: 4,
+            },
+            remove: {
+              particles_nb: 2,
+            },
+          },
+        },
+        retina_detect: true,
       }}
     />
   );

@@ -1,8 +1,9 @@
 import { lazy } from "react";
-import { Helmet } from "react-helmet";
+import { Navigate } from "react-router-dom";
 
 // project imports
 import MainLayout from "../../layout/MainLayout";
+import { Home } from "../../views";
 // import Loadable from "../../common/Loadable";
 
 // dashboard routing
@@ -15,14 +16,11 @@ const MainRoutes = {
   children: [
     {
       path: "/logged-in",
-      element: (
-        <div>
-          <Helmet>
-            <title>loggedin | emailDAO</title>
-          </Helmet>
-          loggin
-        </div>
-      ),
+      element: <Navigate to="/logged-in/inbox" />,
+    },
+    {
+      path: "/logged-in/:id",
+      element: <Home />,
     },
   ],
 };
