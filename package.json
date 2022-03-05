@@ -67,7 +67,11 @@
       "**/hardhat-ts/**"
     ]
   },
-  "dependencies": {},
+  "dependencies": {
+    "ipfs-http-client": "^56.0.1",
+    "levelup": "^5.1.1",
+    "orbit-db": "^0.28.3"
+  },
   "devDependencies": {
     "husky": "^7.0.2"
   }

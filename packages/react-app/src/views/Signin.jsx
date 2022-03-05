@@ -137,6 +137,42 @@ function App(props) {
   const userProviderAndSigner = useUserProviderAndSigner(injectedProvider, localProvider, USE_BURNER_WALLET);
   const userSigner = userProviderAndSigner.signer;
 
+  async function requestPersonalSign(provider, currentWalletAddr) {
+    if (provider) {
+      if (currentWalletAddr) {
+        const message = "Same message with a date at the end <epoch-date-in-milliseconds>";
+        window.ethereum
+          .request({
+            method: "personal_sign",
+            params: [message, currentWalletAddr],
+          })
+          .then(signature => {
+            console.log("Original address:", currentWalletAddr);
+            console.log("Signed message:", signature);
+            console.log(
+              "Original address is proven to be the actual sender:",
+              validatePersonalSign(currentWalletAddr, signature, message),
+            );
+
+            return [signature, message, currentWalletAddr];
+          })
+          .catch(err => {
+            console.log("There was a problem retrieving the personal_sign", err);
+          });
+      } else {
+        console.log("Cannot request personal_sign without a connected wallet");
+      }
+    }
+  }
+
+  function validatePersonalSign(senderAddr, signature, originalMessage) {
+    const recoveredAddr = ethers.utils.verifyMessage(originalMessage, signature);
+
+    console.log("Recovered addr using ecrover:", recoveredAddr);
+
+    return recoveredAddr === senderAddr;
+  }
+
   useEffect(() => {
     console.log("userSigner", userSigner);
     async function getAddress() {
