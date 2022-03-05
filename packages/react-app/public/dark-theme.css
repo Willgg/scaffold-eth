@@ -1,3 +1,5 @@
+@import "../src/themes/dark-theme.less";
+
 @keyframes antFadeIn {
   0% {
     opacity: 0;
@@ -23867,4 +23869,7 @@ div.ant-typography-edit-content.ant-typography-rtl {
 }
 .highlight {
   background-color: #3f3f3f;
+}
+.Signin{
+  background:linear-gradient(45deg, black, transparent);
 }

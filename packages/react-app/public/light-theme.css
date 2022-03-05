@@ -3970,7 +3970,7 @@ a.ant-btn-sm {
   list-style: none;
   font-feature-settings: "tnum";
   position: relative;
-  background: #fff;
+  background: rgba(255,255,255,0.2);
   border-radius: 4px;
 }
 .ant-card-rtl {
@@ -3982,10 +3982,13 @@ a.ant-btn-sm {
 }
 .ant-card-hoverable:hover {
   border-color: transparent;
+  background: #fff;
   box-shadow: 0 1px 2px -2px rgba(0, 0, 0, 0.16), 0 3px 6px 0 rgba(0, 0, 0, 0.12), 0 5px 12px 4px rgba(0, 0, 0, 0.09);
+  transition: all 0.5s ease-in
 }
 .ant-card-bordered {
   border: 1px solid #f0f0f0;
+  margin:1rem 0 1rem 0;
 }
 .ant-card-head {
   min-height: 48px;
@@ -14003,6 +14006,8 @@ tr.ant-table-expanded-row .ant-descriptions-view table {
   flex-direction: column;
   min-height: 0;
   background: #f0f2f5;
+  background: linear-gradient(89deg, #ff5edf 0%, #04c8de 100%);
+
 }
 .ant-layout,
 .ant-layout * {
@@ -14024,7 +14029,7 @@ tr.ant-table-expanded-row .ant-descriptions-view table {
   padding: 0 50px;
   color: rgba(0, 0, 0, 0.85);
   line-height: 64px;
-  background: #001529;
+  background: #fff;
 }
 .ant-layout-footer {
   padding: 24px 50px;
@@ -14039,7 +14044,7 @@ tr.ant-table-expanded-row .ant-descriptions-view table {
 .ant-layout-sider {
   position: relative;
   min-width: 0;
-  background: #001529;
+  background: #fff;
   transition: all 0.2s;
 }
 .ant-layout-sider-children {
@@ -23640,4 +23645,12 @@ div.ant-typography-edit-content.ant-typography-rtl {
 }
 .highlight {
   background-color: #f9f9f9;
+}
+.ant-layout .ant-mail-cover{
+  padding:1rem;
+  background: rgba(255,255,255, 0.2);
+}
+
+.Signin{
+  background:linear-gradient(89deg, #ff5edf 0%, #04c8de 100%);
 }
