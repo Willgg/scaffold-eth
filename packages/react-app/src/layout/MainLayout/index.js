@@ -46,9 +46,7 @@ const SiderDemo = () => {
           navigate("/logged-in");
         }
         const params = getParams(window.location);
-        console.log(params.query);
         if (params.query === "true") {
-          console.log("DFgggggggggggggggggggggggggg-------------");
           showMessageBox(false);
         }
         console.log(params);
@@ -62,14 +60,11 @@ const SiderDemo = () => {
 
   React.useEffect(() => {
     const params = getParams(window.location);
-    console.log(params.query);
     if (params.query === "true") {
-      console.log("DFgggggggggggggggggggggggggg-------------");
       showMessageBox(false);
     } else {
       !messageBox && showMessageBox(true);
     }
-    console.log(params);
   }, [window.location.search]);
 
   const toggle = React.useCallback(() => {
