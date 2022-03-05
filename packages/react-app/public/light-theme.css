@@ -3970,7 +3970,7 @@ a.ant-btn-sm {
   list-style: none;
   font-feature-settings: "tnum";
   position: relative;
-  background: transparent;
+  background: rgba(255,255,255,0.2);
   border-radius: 4px;
 }
 .ant-card-rtl {
